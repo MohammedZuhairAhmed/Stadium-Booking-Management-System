@@ -2,7 +2,7 @@ const express = require("express");
 const bodyparser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
-
+const PORT = process.env.PORT || 9000;
 const app = express();
 app.set("view engine","ejs");
 app.use(express.static("public"));
@@ -22,6 +22,6 @@ app.post("/register",(req,res)=>{
     console.log(req.body);
 })
 
-app.listen(3000,() =>{
+app.listen(PORT,() =>{
     console.log("Listening at port 3000");
 })
