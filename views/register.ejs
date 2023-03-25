@@ -1,0 +1,132 @@
+<%-include("partials/head");-%> 
+
+<div>
+    <div class="register-div" id="regdiv">
+ <form action="/register" method="POST">
+            <div class="form-group">
+              <label for="fname">FIRST-NAME</label>
+              <input type="text" class="form-control register-input" name="fname">
+            </div>
+            <div class="form-group">
+              <label for="lname">LAST-NAME</label>
+              <input type="text" class="form-control register-input" name="lname">
+            </div>
+            <div class="form-group">
+              <label for="number">PHONE NUMBER</label>
+              <input type="text" class="form-control register-input" name="phno">
+            </div>
+            <div class="form-group">
+              <label for="email">EMAIL</label>
+              <input type="email" class="form-control register-input" name="username">
+            </div>
+            <div class="form-group">
+              <label for="password">PASSWORD</label>
+              <input type="password" class="form-control register-input" name="password" id="pwd-input">
+            </div>
+            <div class="form-group" id="pwd-validation" style="display: none;">
+              • Password must be at least 8 characters long<br>
+              • Password must contain at least one uppercase letter<br>
+              • Password must contain at least one lowercase letter<br>
+              • Password must contain at least one number<br>
+              • Password must contain at least one special character<br>
+            </div>
+            <div class="form-group">
+              <label for="con-password">CONFIRM PASSWORD</label>
+              <input type="password" class="form-control register-input" name="conpwd" id="con-pwd">
+              <div id="pwd-con">
+              </div>
+            </div>
+            <button type="submit" class="home-button" id="reg-btn" disabled>REGISTER</button>
+          </form>
+          <br>
+          <div id="myDiv" style="position: relative;">
+            <br>
+            <div style="position: absolute; bottom: 0; left: 0; text-align: left; padding: 5px 0 5px 10px;">
+                 <a href="http://localhost:3000/" style="color: black;">&lt; back</a>
+            </div>
+            <div style="position: absolute; bottom: 0; right: 0; text-align: right; padding: 5px 10px 5px 0;">
+              already have an account?<a href="http://localhost:3000/login" style="color: black;"> LogIn &gt;</a>
+            </div>
+          </div>
+          
+    </div>
+</div>
+
+<script>
+  const regdiv = document.getElementById('regdiv');
+  const passwordInput = document.getElementById('pwd-input');
+  const passwordValidation = document.getElementById('pwd-validation');
+  const conpwd = document.getElementById('con-pwd');
+  const condiv = document.getElementById('pwd-con');
+  const regbtn = document.getElementById('reg-btn');
+
+  passwordInput.addEventListener('input', () => {
+    passwordValidation.style.display = "block";
+    regdiv.style.height = "750px";
+    const password = passwordInput.value;
+    const errors = [];
+
+    if (password.length < 8) {
+      errors.push('Password must be at least 8 characters long');
+    } else {
+      passwordValidation.classList.add('success');
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      errors.push('Password must contain at least one uppercase letter');
+    } else {
+      passwordValidation.classList.add('success');
+    }
+
+    if (!/[a-z]/.test(password)) {
+      errors.push('Password must contain at least one lowercase letter');
+    } else {
+      passwordValidation.classList.add('success');
+    }
+
+    if (!/\d/.test(password)) {
+      errors.push('Password must contain at least one number');
+    } else {
+      passwordValidation.classList.add('success');
+    }
+
+    if (!/[^A-Za-z0-9]/.test(password)) {
+      errors.push('Password must contain at least one special character');
+    } else {
+      passwordValidation.classList.add('success');
+    }
+
+    if (errors.length > 0) {
+      passwordValidation.innerHTML =  errors.map(error => `<i class="fas fa-times"></i> ${error}<br>`).join('');
+      passwordValidation.classList.remove('success');
+      passwordValidation.classList.add('error');
+    } else {
+      passwordValidation.innerHTML = `<i class="fas fa-check"></i>`+' Password meets all requirements';
+      passwordValidation.classList.remove('error');
+      passwordValidation.classList.add('success');
+      regdiv.style.height = "660px";
+    }
+  });
+
+  conpwd.addEventListener('input', () => {
+    const password = passwordInput.value;
+    const confirmPassword = conpwd.value;
+    const errors = [];
+    passwordValidation.innerHTML = ''
+    if (password !== confirmPassword) {
+      errors.push('Passwords do not match');
+    }
+
+    if (errors.length > 0) {
+      condiv.innerHTML = errors.map(error => `<i class="fas fa-times"></i> ${error}`).join('');
+      condiv.innerHTML = condiv.innerHTML + '<br>';
+      condiv.classList.remove('success');
+      condiv.classList.add('error');
+    }else {
+      condiv.innerHTML = ''
+      regdiv.style.height = "620px";
+      regbtn.disabled = false;
+    }
+  });
+</script>
+<%-include("partials/tail");-%> 
